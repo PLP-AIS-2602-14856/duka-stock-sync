@@ -14,7 +14,177 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      items: {
+        Row: {
+          category: string
+          created_at: string
+          discontinued: boolean
+          id: string
+          name: string
+          sku: string
+          unit_description: string
+          wholesale_price_kes: number
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          discontinued?: boolean
+          id?: string
+          name: string
+          sku: string
+          unit_description?: string
+          wholesale_price_kes?: number
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          discontinued?: boolean
+          id?: string
+          name?: string
+          sku?: string
+          unit_description?: string
+          wholesale_price_kes?: number
+        }
+        Relationships: []
+      }
+      orders: {
+        Row: {
+          created_at: string
+          duka_name: string
+          id: string
+          item_id: string
+          quantity_requested: number
+          status: Database["public"]["Enums"]["order_status"]
+          status_note: string | null
+          warehouse_id: string
+        }
+        Insert: {
+          created_at?: string
+          duka_name: string
+          id?: string
+          item_id: string
+          quantity_requested: number
+          status?: Database["public"]["Enums"]["order_status"]
+          status_note?: string | null
+          warehouse_id: string
+        }
+        Update: {
+          created_at?: string
+          duka_name?: string
+          id?: string
+          item_id?: string
+          quantity_requested?: number
+          status?: Database["public"]["Enums"]["order_status"]
+          status_note?: string | null
+          warehouse_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_warehouse_id_fkey"
+            columns: ["warehouse_id"]
+            isOneToOne: false
+            referencedRelation: "warehouses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      stock: {
+        Row: {
+          id: string
+          item_id: string
+          last_synced_at: string
+          quantity_available: number
+          warehouse_id: string
+        }
+        Insert: {
+          id?: string
+          item_id: string
+          last_synced_at?: string
+          quantity_available?: number
+          warehouse_id: string
+        }
+        Update: {
+          id?: string
+          item_id?: string
+          last_synced_at?: string
+          quantity_available?: number
+          warehouse_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stock_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stock_warehouse_id_fkey"
+            columns: ["warehouse_id"]
+            isOneToOne: false
+            referencedRelation: "warehouses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sync_logs: {
+        Row: {
+          duration_ms: number
+          error: string | null
+          id: string
+          items_updated: number
+          message: string | null
+          ran_at: string
+          status: string
+        }
+        Insert: {
+          duration_ms?: number
+          error?: string | null
+          id?: string
+          items_updated?: number
+          message?: string | null
+          ran_at?: string
+          status?: string
+        }
+        Update: {
+          duration_ms?: number
+          error?: string | null
+          id?: string
+          items_updated?: number
+          message?: string | null
+          ran_at?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      warehouses: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          region: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          region: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          region?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +193,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      order_status: "pending" | "confirmed" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +320,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      order_status: ["pending", "confirmed", "rejected"],
+    },
   },
 } as const
