@@ -174,7 +174,7 @@ export async function getAvailability(warehouseId: string, itemId: string): Prom
       .eq("item_id", itemId)
       .limit(1),
   ) as { quantity_available: number }[];
-  return rows.length ? rows[0].quantity_available : null;
+  return rows[0] ? rows[0].quantity_available : null;
 }
 
 /* ---------- orders ---------- */
@@ -237,6 +237,7 @@ export async function confirmOrder(order: Order) {
       .eq("item_id", order.item_id)
       .limit(1),
   ) as { id: string }[];
+  if (!rows[0]) throw new Error("Stock row not found for this item/warehouse.");
   await adjustStock(rows[0].id, available - order.quantity_requested);
   const note = `Confirmed. ${order.quantity_requested} units allocated from ${available} available.`;
   unwrap(await supabase.from("orders").update({ status: "confirmed", status_note: note }).eq("id", order.id).select());
