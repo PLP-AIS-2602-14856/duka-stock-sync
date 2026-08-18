@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ItemsRouteImport } from './routes/items'
 import { Route as ApiPublicHooksSyncStockRouteImport } from './routes/api/public/hooks/sync-stock'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ItemsRoute = ItemsRouteImport.update({
+  id: '/items',
+  path: '/items',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicHooksSyncStockRoute = ApiPublicHooksSyncStockRouteImport.update({
@@ -25,27 +31,31 @@ const ApiPublicHooksSyncStockRoute = ApiPublicHooksSyncStockRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/items': typeof ItemsRoute
   '/api/public/hooks/sync-stock': typeof ApiPublicHooksSyncStockRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/items': typeof ItemsRoute
   '/api/public/hooks/sync-stock': typeof ApiPublicHooksSyncStockRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/items': typeof ItemsRoute
   '/api/public/hooks/sync-stock': typeof ApiPublicHooksSyncStockRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/public/hooks/sync-stock'
+  fullPaths: '/' | '/items' | '/api/public/hooks/sync-stock'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/public/hooks/sync-stock'
-  id: '__root__' | '/' | '/api/public/hooks/sync-stock'
+  to: '/' | '/items' | '/api/public/hooks/sync-stock'
+  id: '__root__' | '/' | '/items' | '/api/public/hooks/sync-stock'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ItemsRoute: typeof ItemsRoute
   ApiPublicHooksSyncStockRoute: typeof ApiPublicHooksSyncStockRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/items': {
+      id: '/items'
+      path: '/items'
+      fullPath: '/items'
+      preLoaderRoute: typeof ItemsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/hooks/sync-stock': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ItemsRoute: ItemsRoute,
   ApiPublicHooksSyncStockRoute: ApiPublicHooksSyncStockRoute,
 }
 export const routeTree = rootRouteImport
