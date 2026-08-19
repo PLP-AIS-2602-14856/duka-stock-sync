@@ -11,6 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ItemsRouteImport } from './routes/items'
+import { Route as OrdersRouteImport } from './routes/orders'
+import { Route as StockRouteImport } from './routes/stock'
+import { Route as SyncLogRouteImport } from './routes/sync-log'
 import { Route as WarehousesRouteImport } from './routes/warehouses'
 import { Route as ApiPublicHooksSyncStockRouteImport } from './routes/api/public/hooks/sync-stock'
 
@@ -22,6 +25,21 @@ const IndexRoute = IndexRouteImport.update({
 const ItemsRoute = ItemsRouteImport.update({
   id: '/items',
   path: '/items',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrdersRoute = OrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StockRoute = StockRouteImport.update({
+  id: '/stock',
+  path: '/stock',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SyncLogRoute = SyncLogRouteImport.update({
+  id: '/sync-log',
+  path: '/sync-log',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WarehousesRoute = WarehousesRouteImport.update({
@@ -38,12 +56,18 @@ const ApiPublicHooksSyncStockRoute = ApiPublicHooksSyncStockRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/items': typeof ItemsRoute
+  '/orders': typeof OrdersRoute
+  '/stock': typeof StockRoute
+  '/sync-log': typeof SyncLogRoute
   '/warehouses': typeof WarehousesRoute
   '/api/public/hooks/sync-stock': typeof ApiPublicHooksSyncStockRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/items': typeof ItemsRoute
+  '/orders': typeof OrdersRoute
+  '/stock': typeof StockRoute
+  '/sync-log': typeof SyncLogRoute
   '/warehouses': typeof WarehousesRoute
   '/api/public/hooks/sync-stock': typeof ApiPublicHooksSyncStockRoute
 }
@@ -51,21 +75,48 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/items': typeof ItemsRoute
+  '/orders': typeof OrdersRoute
+  '/stock': typeof StockRoute
+  '/sync-log': typeof SyncLogRoute
   '/warehouses': typeof WarehousesRoute
   '/api/public/hooks/sync-stock': typeof ApiPublicHooksSyncStockRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/items' | '/warehouses' | '/api/public/hooks/sync-stock'
+  fullPaths:
+    | '/'
+    | '/items'
+    | '/orders'
+    | '/stock'
+    | '/sync-log'
+    | '/warehouses'
+    | '/api/public/hooks/sync-stock'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/items' | '/warehouses' | '/api/public/hooks/sync-stock'
+  to:
+    | '/'
+    | '/items'
+    | '/orders'
+    | '/stock'
+    | '/sync-log'
+    | '/warehouses'
+    | '/api/public/hooks/sync-stock'
   id:
-    '__root__' | '/' | '/items' | '/warehouses' | '/api/public/hooks/sync-stock'
+    | '__root__'
+    | '/'
+    | '/items'
+    | '/orders'
+    | '/stock'
+    | '/sync-log'
+    | '/warehouses'
+    | '/api/public/hooks/sync-stock'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ItemsRoute: typeof ItemsRoute
+  OrdersRoute: typeof OrdersRoute
+  StockRoute: typeof StockRoute
+  SyncLogRoute: typeof SyncLogRoute
   WarehousesRoute: typeof WarehousesRoute
   ApiPublicHooksSyncStockRoute: typeof ApiPublicHooksSyncStockRoute
 }
@@ -84,6 +135,27 @@ declare module '@tanstack/react-router' {
       path: '/items'
       fullPath: '/items'
       preLoaderRoute: typeof ItemsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/orders': {
+      id: '/orders'
+      path: '/orders'
+      fullPath: '/orders'
+      preLoaderRoute: typeof OrdersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stock': {
+      id: '/stock'
+      path: '/stock'
+      fullPath: '/stock'
+      preLoaderRoute: typeof StockRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sync-log': {
+      id: '/sync-log'
+      path: '/sync-log'
+      fullPath: '/sync-log'
+      preLoaderRoute: typeof SyncLogRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/warehouses': {
@@ -106,6 +178,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ItemsRoute: ItemsRoute,
+  OrdersRoute: OrdersRoute,
+  StockRoute: StockRoute,
+  SyncLogRoute: SyncLogRoute,
   WarehousesRoute: WarehousesRoute,
   ApiPublicHooksSyncStockRoute: ApiPublicHooksSyncStockRoute,
 }
