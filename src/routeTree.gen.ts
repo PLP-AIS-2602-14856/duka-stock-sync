@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ItemsRouteImport } from './routes/items'
+import { Route as OrdersRouteImport } from './routes/orders'
 import { Route as StockRouteImport } from './routes/stock'
 import { Route as WarehousesRouteImport } from './routes/warehouses'
 import { Route as ApiPublicHooksSyncStockRouteImport } from './routes/api/public/hooks/sync-stock'
@@ -23,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
 const ItemsRoute = ItemsRouteImport.update({
   id: '/items',
   path: '/items',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrdersRoute = OrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StockRoute = StockRouteImport.update({
@@ -44,6 +50,7 @@ const ApiPublicHooksSyncStockRoute = ApiPublicHooksSyncStockRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/items': typeof ItemsRoute
+  '/orders': typeof OrdersRoute
   '/stock': typeof StockRoute
   '/warehouses': typeof WarehousesRoute
   '/api/public/hooks/sync-stock': typeof ApiPublicHooksSyncStockRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/items': typeof ItemsRoute
+  '/orders': typeof OrdersRoute
   '/stock': typeof StockRoute
   '/warehouses': typeof WarehousesRoute
   '/api/public/hooks/sync-stock': typeof ApiPublicHooksSyncStockRoute
@@ -59,6 +67,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/items': typeof ItemsRoute
+  '/orders': typeof OrdersRoute
   '/stock': typeof StockRoute
   '/warehouses': typeof WarehousesRoute
   '/api/public/hooks/sync-stock': typeof ApiPublicHooksSyncStockRoute
@@ -66,13 +75,25 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/items' | '/stock' | '/warehouses' | '/api/public/hooks/sync-stock'
+    | '/'
+    | '/items'
+    | '/orders'
+    | '/stock'
+    | '/warehouses'
+    | '/api/public/hooks/sync-stock'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/items' | '/stock' | '/warehouses' | '/api/public/hooks/sync-stock'
+  to:
+    | '/'
+    | '/items'
+    | '/orders'
+    | '/stock'
+    | '/warehouses'
+    | '/api/public/hooks/sync-stock'
   id:
     | '__root__'
     | '/'
     | '/items'
+    | '/orders'
     | '/stock'
     | '/warehouses'
     | '/api/public/hooks/sync-stock'
@@ -81,6 +102,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ItemsRoute: typeof ItemsRoute
+  OrdersRoute: typeof OrdersRoute
   StockRoute: typeof StockRoute
   WarehousesRoute: typeof WarehousesRoute
   ApiPublicHooksSyncStockRoute: typeof ApiPublicHooksSyncStockRoute
@@ -100,6 +122,13 @@ declare module '@tanstack/react-router' {
       path: '/items'
       fullPath: '/items'
       preLoaderRoute: typeof ItemsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/orders': {
+      id: '/orders'
+      path: '/orders'
+      fullPath: '/orders'
+      preLoaderRoute: typeof OrdersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/stock': {
@@ -129,6 +158,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ItemsRoute: ItemsRoute,
+  OrdersRoute: OrdersRoute,
   StockRoute: StockRoute,
   WarehousesRoute: WarehousesRoute,
   ApiPublicHooksSyncStockRoute: ApiPublicHooksSyncStockRoute,
