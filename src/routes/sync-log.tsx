@@ -36,7 +36,7 @@ function SyncLogPage() {
     mutationFn: runSyncNow,
     onSuccess: (result) => {
       toast.success(`Sync complete — ${result.items_updated ?? 0} stock rows updated`);
-      qc.invalidateQueries({ queryKey: ["sync_logs"] });
+      qc.invalidateQueries({ queryKey: ["sync_log"] });
       qc.invalidateQueries({ queryKey: ["stock"] });
     },
     onError: (e: Error) => toast.error(e.message),
@@ -89,8 +89,8 @@ function SyncLogPage() {
             {logs.map((log) => (
               <TableRow key={log.id}>
                 <TableCell className="whitespace-nowrap">
-                  <div className="text-sm">{dateTime(log.ran_at)}</div>
-                  <div className="text-muted-foreground text-xs">{timeAgo(log.ran_at)}</div>
+                  <div className="text-sm">{dateTime(log.run_at)}</div>
+                  <div className="text-muted-foreground text-xs">{timeAgo(log.run_at)}</div>
                 </TableCell>
                 <TableCell>
                   <Badge variant={log.status === "success" ? "secondary" : "destructive"}>
@@ -100,7 +100,7 @@ function SyncLogPage() {
                 <TableCell className="tabular text-right">{log.items_updated}</TableCell>
                 <TableCell className="tabular text-right">{log.duration_ms} ms</TableCell>
                 <TableCell className="text-muted-foreground max-w-96 text-xs">
-                  {log.message}
+                  {log.notes}
                   {log.error && <span className="text-destructive block">Error: {log.error}</span>}
                 </TableCell>
               </TableRow>

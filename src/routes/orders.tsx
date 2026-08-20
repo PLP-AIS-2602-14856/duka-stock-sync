@@ -158,7 +158,7 @@ function OrdersPage() {
                 </SelectTrigger>
                 <SelectContent>
                   {items
-                    .filter((i) => !i.discontinued)
+                    .filter((i) => !i.is_discontinued)
                     .map((i) => (
                       <SelectItem key={i.id} value={i.id}>
                         {i.name} — {kes(i.wholesale_price_kes)} / {i.unit_description}

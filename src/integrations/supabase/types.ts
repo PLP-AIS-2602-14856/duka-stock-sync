@@ -18,8 +18,8 @@ export type Database = {
         Row: {
           category: string
           created_at: string
-          discontinued: boolean
           id: string
+          is_discontinued: boolean
           name: string
           sku: string
           unit_description: string
@@ -28,8 +28,8 @@ export type Database = {
         Insert: {
           category?: string
           created_at?: string
-          discontinued?: boolean
           id?: string
+          is_discontinued?: boolean
           name: string
           sku: string
           unit_description?: string
@@ -38,8 +38,8 @@ export type Database = {
         Update: {
           category?: string
           created_at?: string
-          discontinued?: boolean
           id?: string
+          is_discontinued?: boolean
           name?: string
           sku?: string
           unit_description?: string
@@ -134,14 +134,14 @@ export type Database = {
           },
         ]
       }
-      sync_logs: {
+      sync_log: {
         Row: {
           duration_ms: number
           error: string | null
           id: string
           items_updated: number
-          message: string | null
-          ran_at: string
+          notes: string | null
+          run_at: string
           status: string
         }
         Insert: {
@@ -149,8 +149,8 @@ export type Database = {
           error?: string | null
           id?: string
           items_updated?: number
-          message?: string | null
-          ran_at?: string
+          notes?: string | null
+          run_at?: string
           status?: string
         }
         Update: {
@@ -158,8 +158,8 @@ export type Database = {
           error?: string | null
           id?: string
           items_updated?: number
-          message?: string | null
-          ran_at?: string
+          notes?: string | null
+          run_at?: string
           status?: string
         }
         Relationships: []

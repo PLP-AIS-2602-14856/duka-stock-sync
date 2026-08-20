@@ -271,7 +271,7 @@ function StockPage() {
                 </SelectTrigger>
                 <SelectContent>
                   {items
-                    .filter((i) => !i.discontinued)
+                    .filter((i) => !i.is_discontinued)
                     .map((i) => (
                       <SelectItem key={i.id} value={i.id}>
                         {i.name}
