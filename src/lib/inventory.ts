@@ -9,7 +9,7 @@ export interface Item {
   category: string;
   wholesale_price_kes: number;
   unit_description: string;
-  discontinued: boolean;
+  is_discontinued: boolean;
   created_at: string;
 }
 
@@ -26,7 +26,7 @@ export interface StockRow {
   item_id: string;
   quantity_available: number;
   last_synced_at: string;
-  items: Pick<Item, "id" | "sku" | "name" | "unit_description" | "discontinued"> | null;
+  items: Pick<Item, "id" | "sku" | "name" | "unit_description" | "is_discontinued"> | null;
   warehouses: Pick<Warehouse, "id" | "name" | "region"> | null;
 }
 
@@ -45,11 +45,11 @@ export interface Order {
 
 export interface SyncLog {
   id: string;
-  ran_at: string;
+  run_at: string;
   status: string;
   items_updated: number;
   duration_ms: number;
-  message: string | null;
+  notes: string | null;
   error: string | null;
 }
 
@@ -86,7 +86,7 @@ export const itemsQuery = {
     unwrap(await supabase.from("items").select("*").order("name")),
 };
 
-export async function createItem(input: Omit<Item, "id" | "created_at" | "discontinued">) {
+export async function createItem(input: Omit<Item, "id" | "created_at" | "is_discontinued">) {
   unwrap(await supabase.from("items").insert(input).select());
 }
 
@@ -98,7 +98,7 @@ export async function updateItem(id: string, input: Partial<Item>) {
 export async function removeItem(id: string): Promise<"discontinued" | "deleted"> {
   const orders = unwrap(await supabase.from("orders").select("id").eq("item_id", id).limit(1));
   if (orders.length > 0) {
-    await updateItem(id, { discontinued: true });
+    await updateItem(id, { is_discontinued: true });
     return "discontinued";
   }
   unwrap(await supabase.from("items").delete().eq("id", id).select());
@@ -137,7 +137,7 @@ export const stockQuery = {
       await supabase
         .from("stock")
         .select(
-          "id, warehouse_id, item_id, quantity_available, last_synced_at, items(id, sku, name, unit_description, discontinued), warehouses(id, name, region)",
+          "id, warehouse_id, item_id, quantity_available, last_synced_at, items(id, sku, name, unit_description, is_discontinued), warehouses(id, name, region)",
         )
         .order("last_synced_at", { ascending: false }),
     ) as unknown as StockRow[],
@@ -251,9 +251,9 @@ export async function rejectOrder(id: string, note = "Rejected by warehouse staf
 /* ---------- sync ---------- */
 
 export const syncLogsQuery = {
-  queryKey: ["sync_logs"],
+  queryKey: ["sync_log"],
   queryFn: async (): Promise<SyncLog[]> =>
-    unwrap(await supabase.from("sync_logs").select("*").order("ran_at", { ascending: false }).limit(100)),
+    unwrap(await supabase.from("sync_log").select("*").order("run_at", { ascending: false }).limit(100)),
 };
 
 export async function runSyncNow() {

@@ -46,7 +46,7 @@ function Overview() {
   const lastSync = logs[0];
 
   const tiles = [
-    { label: "Active items", value: items.filter((i) => !i.discontinued).length, to: "/items", icon: Boxes },
+    { label: "Active items", value: items.filter((i) => !i.is_discontinued).length, to: "/items", icon: Boxes },
     { label: "Warehouses", value: warehouses.length, to: "/warehouses", icon: Building2 },
     { label: "Pending orders", value: pending, to: "/orders", icon: ClipboardList },
     { label: "Low stock rows", value: lowStock.length, to: "/stock", icon: AlertTriangle },
@@ -80,7 +80,7 @@ function Overview() {
             {lastSync ? (
               <>
                 <p>
-                  Last poll <span className="font-medium">{timeAgo(lastSync.ran_at)}</span> ·{" "}
+                  Last poll <span className="font-medium">{timeAgo(lastSync.run_at)}</span> ·{" "}
                   {lastSync.items_updated} stock rows updated
                 </p>
                 <Badge className="mt-2" variant={lastSync.status === "success" ? "secondary" : "destructive"}>

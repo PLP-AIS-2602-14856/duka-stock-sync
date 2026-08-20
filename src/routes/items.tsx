@@ -111,7 +111,7 @@ function ItemsPage() {
   });
 
   const toggleDiscontinued = useMutation({
-    mutationFn: (item: Item) => updateItem(item.id, { discontinued: !item.discontinued }),
+    mutationFn: (item: Item) => updateItem(item.id, { is_discontinued: !item.is_discontinued }),
     onSuccess: () => {
       toast.success("Item status updated");
       invalidate();
@@ -181,8 +181,8 @@ function ItemsPage() {
                 <TableCell className="tabular text-right">{kes(item.wholesale_price_kes)}</TableCell>
                 <TableCell>
                   <button onClick={() => toggleDiscontinued.mutate(item)}>
-                    <Badge variant={item.discontinued ? "outline" : "secondary"}>
-                      {item.discontinued ? "Discontinued" : "Active"}
+                    <Badge variant={item.is_discontinued ? "outline" : "secondary"}>
+                      {item.is_discontinued ? "Discontinued" : "Active"}
                     </Badge>
                   </button>
                 </TableCell>

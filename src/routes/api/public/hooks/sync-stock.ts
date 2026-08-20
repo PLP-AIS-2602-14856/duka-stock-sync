@@ -41,7 +41,7 @@ async function runSync(trigger: string) {
     }
 
     const duration = Date.now() - started;
-    await supabase.from("sync_logs").insert({
+    await supabase.from("sync_log").insert({
       status: "success",
       items_updated: updates.length,
       duration_ms: duration,
@@ -51,7 +51,7 @@ async function runSync(trigger: string) {
     return { ok: true, items_updated: updates.length, duration_ms: duration };
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown sync error";
-    await supabase.from("sync_logs").insert({
+    await supabase.from("sync_log").insert({
       status: "error",
       items_updated: 0,
       duration_ms: Date.now() - started,
