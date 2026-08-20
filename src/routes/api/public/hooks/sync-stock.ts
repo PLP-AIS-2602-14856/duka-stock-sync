@@ -45,7 +45,7 @@ async function runSync(trigger: string) {
       status: "success",
       items_updated: updates.length,
       duration_ms: duration,
-      message: `${trigger} poll of mock warehouse system: ${updates.length} of ${rows?.length ?? 0} stock rows changed`,
+      notes: `${trigger} poll of mock warehouse system: ${updates.length} of ${rows?.length ?? 0} stock rows changed`,
     });
 
     return { ok: true, items_updated: updates.length, duration_ms: duration };
@@ -55,7 +55,7 @@ async function runSync(trigger: string) {
       status: "error",
       items_updated: 0,
       duration_ms: Date.now() - started,
-      message: `${trigger} poll of mock warehouse system failed`,
+      notes: `${trigger} poll of mock warehouse system failed`,
       error: message,
     });
     return { ok: false, error: message };
