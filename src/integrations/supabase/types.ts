@@ -26,14 +26,14 @@ export type Database = {
           wholesale_price_kes: number
         }
         Insert: {
-          category?: string
+          category: string
           created_at?: string
           id?: string
           is_discontinued?: boolean
           name: string
           sku: string
-          unit_description?: string
-          wholesale_price_kes?: number
+          unit_description: string
+          wholesale_price_kes: number
         }
         Update: {
           category?: string
@@ -54,8 +54,7 @@ export type Database = {
           id: string
           item_id: string
           quantity_requested: number
-          status: Database["public"]["Enums"]["order_status"]
-          status_note: string | null
+          status: string
           warehouse_id: string
         }
         Insert: {
@@ -64,8 +63,7 @@ export type Database = {
           id?: string
           item_id: string
           quantity_requested: number
-          status?: Database["public"]["Enums"]["order_status"]
-          status_note?: string | null
+          status?: string
           warehouse_id: string
         }
         Update: {
@@ -74,8 +72,7 @@ export type Database = {
           id?: string
           item_id?: string
           quantity_requested?: number
-          status?: Database["public"]["Enums"]["order_status"]
-          status_note?: string | null
+          status?: string
           warehouse_id?: string
         }
         Relationships: [
@@ -136,8 +133,6 @@ export type Database = {
       }
       sync_log: {
         Row: {
-          duration_ms: number
-          error: string | null
           id: string
           items_updated: number
           notes: string | null
@@ -145,8 +140,6 @@ export type Database = {
           status: string
         }
         Insert: {
-          duration_ms?: number
-          error?: string | null
           id?: string
           items_updated?: number
           notes?: string | null
@@ -154,8 +147,6 @@ export type Database = {
           status?: string
         }
         Update: {
-          duration_ms?: number
-          error?: string | null
           id?: string
           items_updated?: number
           notes?: string | null
