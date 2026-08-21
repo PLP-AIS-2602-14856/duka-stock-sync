@@ -55,6 +55,8 @@ export type Database = {
           item_id: string
           quantity_requested: number
           status: string
+          status_note: string | null
+          user_id: string | null
           warehouse_id: string
         }
         Insert: {
@@ -64,6 +66,8 @@ export type Database = {
           item_id: string
           quantity_requested: number
           status?: string
+          status_note?: string | null
+          user_id?: string | null
           warehouse_id: string
         }
         Update: {
@@ -73,6 +77,8 @@ export type Database = {
           item_id?: string
           quantity_requested?: number
           status?: string
+          status_note?: string | null
+          user_id?: string | null
           warehouse_id?: string
         }
         Relationships: [
@@ -91,6 +97,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          duka_name: string | null
+          full_name: string | null
+          id: string
+          role: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          duka_name?: string | null
+          full_name?: string | null
+          id: string
+          role?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          duka_name?: string | null
+          full_name?: string | null
+          id?: string
+          role?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       stock: {
         Row: {
@@ -181,7 +214,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      approve_order: {
+        Args: { p_order_id: string; p_quantity?: number }
+        Returns: Json
+      }
+      is_admin: { Args: { _user_id: string }; Returns: boolean }
+      reject_order: {
+        Args: { p_note?: string; p_order_id: string }
+        Returns: Json
+      }
     }
     Enums: {
       order_status: "pending" | "confirmed" | "rejected"
