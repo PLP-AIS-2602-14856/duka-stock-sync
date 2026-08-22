@@ -25,7 +25,7 @@ import {
   type Warehouse,
 } from "@/lib/inventory";
 
-export const Route = createFileRoute("/warehouses")({
+export const Route = createFileRoute("/_authenticated/admin/warehouses")({
   head: () => ({
     meta: [
       { title: "Warehouses — Duka Sync wholesale inventory" },

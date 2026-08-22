@@ -166,6 +166,8 @@ export type Database = {
       }
       sync_log: {
         Row: {
+          duration_ms: number
+          error: string | null
           id: string
           items_updated: number
           notes: string | null
@@ -173,6 +175,8 @@ export type Database = {
           status: string
         }
         Insert: {
+          duration_ms?: number
+          error?: string | null
           id?: string
           items_updated?: number
           notes?: string | null
@@ -180,6 +184,8 @@ export type Database = {
           status?: string
         }
         Update: {
+          duration_ms?: number
+          error?: string | null
           id?: string
           items_updated?: number
           notes?: string | null

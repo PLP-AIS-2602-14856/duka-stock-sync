@@ -34,7 +34,7 @@ import {
   warehousesQuery,
 } from "@/lib/inventory";
 
-export const Route = createFileRoute("/stock")({
+export const Route = createFileRoute("/_authenticated/admin/stock")({
   head: () => ({
     meta: [
       { title: "Stock levels — Duka Sync wholesale inventory" },

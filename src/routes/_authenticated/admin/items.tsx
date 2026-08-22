@@ -26,7 +26,7 @@ import {
   type Item,
 } from "@/lib/inventory";
 
-export const Route = createFileRoute("/items")({
+export const Route = createFileRoute("/_authenticated/admin/items")({
   head: () => ({
     meta: [
       { title: "Items — Duka Sync wholesale inventory" },

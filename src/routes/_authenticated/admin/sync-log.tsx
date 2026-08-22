@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { dateTime, runSyncNow, syncLogsQuery, timeAgo } from "@/lib/inventory";
 
-export const Route = createFileRoute("/sync-log")({
+export const Route = createFileRoute("/_authenticated/admin/sync-log")({
   head: () => ({
     meta: [
       { title: "Sync Log — Duka Sync wholesale inventory" },
