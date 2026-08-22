@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthenticatedAdminItemsRouteImport } from './routes/_authenticated/admin/items'
 import { Route as AuthenticatedAdminStockRouteImport } from './routes/_authenticated/admin/stock'
 import { Route as AuthenticatedAdminSyncLogRouteImport } from './routes/_authenticated/admin/sync-log'
@@ -21,27 +22,31 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedAdminItemsRoute = AuthenticatedAdminItemsRouteImport.update({
-  id: '/_authenticated/admin/items',
-  path: '/admin/items',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminItemsRoute = AuthenticatedAdminItemsRouteImport.update({
+  id: '/admin/items',
+  path: '/admin/items',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedAdminStockRoute = AuthenticatedAdminStockRouteImport.update({
-  id: '/_authenticated/admin/stock',
+  id: '/admin/stock',
   path: '/admin/stock',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedAdminSyncLogRoute =
   AuthenticatedAdminSyncLogRouteImport.update({
-    id: '/_authenticated/admin/sync-log',
+    id: '/admin/sync-log',
     path: '/admin/sync-log',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAdminWarehousesRoute =
   AuthenticatedAdminWarehousesRouteImport.update({
-    id: '/_authenticated/admin/warehouses',
+    id: '/admin/warehouses',
     path: '/admin/warehouses',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const ApiPublicHooksSyncStockRoute = ApiPublicHooksSyncStockRouteImport.update({
   id: '/api/public/hooks/sync-stock',
@@ -68,6 +73,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/_authenticated/admin/items': typeof AuthenticatedAdminItemsRoute
   '/_authenticated/admin/stock': typeof AuthenticatedAdminStockRoute
   '/_authenticated/admin/sync-log': typeof AuthenticatedAdminSyncLogRoute
@@ -94,6 +100,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/_authenticated/admin/items'
     | '/_authenticated/admin/stock'
     | '/_authenticated/admin/sync-log'
@@ -103,10 +110,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthenticatedAdminItemsRoute: typeof AuthenticatedAdminItemsRoute
-  AuthenticatedAdminStockRoute: typeof AuthenticatedAdminStockRoute
-  AuthenticatedAdminSyncLogRoute: typeof AuthenticatedAdminSyncLogRoute
-  AuthenticatedAdminWarehousesRoute: typeof AuthenticatedAdminWarehousesRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   ApiPublicHooksSyncStockRoute: typeof ApiPublicHooksSyncStockRoute
 }
 
@@ -119,33 +123,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin/items': {
       id: '/_authenticated/admin/items'
       path: '/admin/items'
       fullPath: '/admin/items'
       preLoaderRoute: typeof AuthenticatedAdminItemsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin/stock': {
       id: '/_authenticated/admin/stock'
       path: '/admin/stock'
       fullPath: '/admin/stock'
       preLoaderRoute: typeof AuthenticatedAdminStockRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin/sync-log': {
       id: '/_authenticated/admin/sync-log'
       path: '/admin/sync-log'
       fullPath: '/admin/sync-log'
       preLoaderRoute: typeof AuthenticatedAdminSyncLogRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin/warehouses': {
       id: '/_authenticated/admin/warehouses'
       path: '/admin/warehouses'
       fullPath: '/admin/warehouses'
       preLoaderRoute: typeof AuthenticatedAdminWarehousesRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/api/public/hooks/sync-stock': {
       id: '/api/public/hooks/sync-stock'
@@ -157,12 +168,26 @@ declare module '@tanstack/react-router' {
   }
 }
 
-const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminItemsRoute: typeof AuthenticatedAdminItemsRoute
+  AuthenticatedAdminStockRoute: typeof AuthenticatedAdminStockRoute
+  AuthenticatedAdminSyncLogRoute: typeof AuthenticatedAdminSyncLogRoute
+  AuthenticatedAdminWarehousesRoute: typeof AuthenticatedAdminWarehousesRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminItemsRoute: AuthenticatedAdminItemsRoute,
   AuthenticatedAdminStockRoute: AuthenticatedAdminStockRoute,
   AuthenticatedAdminSyncLogRoute: AuthenticatedAdminSyncLogRoute,
   AuthenticatedAdminWarehousesRoute: AuthenticatedAdminWarehousesRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   ApiPublicHooksSyncStockRoute: ApiPublicHooksSyncStockRoute,
 }
 export const routeTree = rootRouteImport
